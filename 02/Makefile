@@ -3,7 +3,7 @@ OBJS = $(SRCS:.c=.o)
 ASMS = $(SRCS:.c=.s)
 
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -g
 O3FLAGS = -O3
 
 # 暗黙ルールを使って、.cから.oの生成を自動で処理
@@ -17,6 +17,10 @@ bin: $(OBJS)
 asm: $(SRCS)
 	$(CC) -o $@.s -S $(SRCS)
 
+# プリプロセス生成物出力
+pps: $(SRCS)
+	$(CC) -o $@.e -E $(SRCS)
+
 # O3最適化付きバイナリ生成
 binO3: $(OBJS)
 	$(CC) -o $@ $(O3FLAGS) $(OBJS)
@@ -28,4 +32,4 @@ asmO3: $(SRCS)
 # クリーンアップ: すべての生成物を削除
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(ASMS) bin binO3 *.s
+	rm -f $(OBJS) $(ASMS) bin binO3 *.s *.e
